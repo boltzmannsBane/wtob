@@ -52,8 +52,9 @@ const Recipes = (props: any) => {
         {/*category*/}
         <div className="p-1 bg-black rounded-sm bg-opacity-80 max-w-max">
           <div className="flex items-center gap-2 border border-def border-opacity-30 px-2">
-            {recipeCategories.map(({ title }) => (
+            {recipeCategories.map(({ title }, i) => (
               <h2
+                key={i}
                 onClick={() => setCategory(title)}
                 className={`italic font-bold text-xl opacity-30 hover:opacity-100 transition duration-500 ${
                   title === category && "opacity-100"

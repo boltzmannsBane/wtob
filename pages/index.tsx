@@ -8,13 +8,6 @@ import Nav from "../components/Nav";
 import Inventory from "../components/Inventory";
 import Recipes from "../components/Recipes";
 
-const fetchGet = async () => {
-  const res = await fetch("/api/hello", { method: "GET" });
-  const data = await res.json();
-  const arr = [...data.ingredients];
-  console.log(arr);
-};
-
 const Home: NextPage<any> = ({ data }) => {
   useEffect(() => console.log(data), []);
   return (
