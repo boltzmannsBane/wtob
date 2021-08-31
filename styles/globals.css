@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap");
+* {
+  user-select: none;
+}
+
+h1,
+h2,
+h3,
+p,
+a {
+  font-family: "Roboto", sans-serif;
+  color: #e2ded3;
+}
+
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.invisible-scrollbar {
+  scrollbar-width: none;
+}
+
+@media screen and (min-width: 1280px) {
+  .inventory {
+    mask: linear-gradient(
+      to left,
+      transparent 5%,
+      #fff 15% 90%,
+      transparent 95%
+    );
+    mask-size: 110% 110%;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-composite: intersect;
+  }
+}
+.centered {
+  left: 50%;
+  transform: translate(-50%, 0) scale(0.7);
+}
+
+@media screen and (max-width: 768px) {
+  [class|="box-modal"] {
+    left: 0;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  [class|="box-modal"] {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.7);
+  }
+  .box-modal-center {
+    left: 50%;
+    transform: translate(-50%, 0) scale(0.7);
+  }
+
+  .box-modal-left {
+    left: 0;
+  }
+  .box-modal-right {
+    right: 0;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .recipe-container {
+    mask: linear-gradient(
+      to top,
+      transparent 5%,
+      #fff 15% 90%,
+      transparent 95%
+    );
+
+    mask-size: 110% 110%;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-composite: intersect;
+  }
+}
+
+.recipes {
+  min-width: 100vw;
+}
+
+@media screen and (min-width: 1280px) {
+  .recipes {
+    min-height: 100%;
+    min-width: 260px;
+  }
+}

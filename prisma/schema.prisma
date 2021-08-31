@@ -1,0 +1,54 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model referenceIngredient {
+  id                Int              @id @default(autoincrement())
+  title             String
+  type              String
+  effect            Int              @default(value: 1)
+  quantity          Int
+  referenceDish     referenceDish?   @relation(fields: [referenceDishId], references: [id])
+  referenceDishId   Int?
+  referencePotion   referencePotion? @relation(fields: [referencePotionId], references: [id])
+  referencePotionId Int?
+}
+
+model referenceDish {
+  id     Int                   @id @default(autoincrement())
+  title  String                @unique
+  recipe referenceIngredient[]
+  effect String
+}
+
+model referencePotion {
+  id     Int                   @id @default(autoincrement())
+  title  String                @unique
+  recipe referenceIngredient[]
+  effect String
+}
+
+model Ingredient {
+  id       Int    @id @default(autoincrement())
+  title    String @unique
+  type     String
+  effect   Int    @default(value: 1)
+  quantity Int
+}
+
+model Dish {
+  id     Int    @id @default(autoincrement())
+  title  String 
+  effect String
+}
+
+model Potion {
+  id     Int    @id @default(autoincrement())
+  title  String 
+  effect String
+}
