@@ -19,7 +19,9 @@ const Home: NextPage<any> = ({ data }) => {
       </header>
       <main className="flex-1 flex flex-wrap xl:flex-nowrap xl:px-4 py-10 xl:py-4 gap-10 xl:gap-20 justify-center content-center items-center max-w-full bg-black bg-opacity-30 backdrop-filter backdrop-blur">
         {data && <Inventory data={data} />}
-        {data && <Recipes data={{ potions: data.potions }} />}
+        {data && (
+          <Recipes data={{ potions: data.potions, dishes: data.dishes }} />
+        )}
       </main>
       <footer className="p-4 bg-black bg-opacity-75 backdrop-filter backdrop-blur-lg">
         footer
@@ -32,8 +34,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const potions = await prisma.referencePotion.findMany({
     include: { recipe: true },
   });
+  const dishes = await prisma.referenceDish.findMany({
+    include: { recipe: true },
+  });
   const ingredients = await prisma.ingredient.findMany();
-  const data = { potions: potions, ingredients: ingredients };
+  const data = { potions: potions, dishes: dishes, ingredients: ingredients };
   return {
     props: { data },
   };
