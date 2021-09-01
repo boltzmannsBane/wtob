@@ -85,8 +85,8 @@ const Recipe = (props: any) => {
       {/* icon */}
       <div className="relative w-full lg:w-32 h-32 flex items-center content-center justify-center">
         <img
-          src="/pumpkin.webp"
-          alt="pumpkin"
+          src={`/${props.data.title.split(' ').join('_')}.webp`}
+          alt={props.data.title}
           className="w-28 h-28 object-cover"
         />
       </div>
