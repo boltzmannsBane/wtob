@@ -3,7 +3,7 @@ import useOutsideAlerter from "./useOutsideAlerter";
 import { gsap } from "gsap";
 import { Transition } from "react-transition-group";
 
-const Box: React.FC<any> = ({ isEmpty, i }) => {
+const Box: React.FC<any> = ({data, isEmpty, i }) => {
   const [active, setActive] = useState(false);
   const ref = useRef(null);
 
@@ -128,8 +128,9 @@ const Box: React.FC<any> = ({ isEmpty, i }) => {
                 !active && " border-opacity-30"
               }`}
             >
+	      {data && <img src={`/${data.title}.webp`} alt={data.title} />}
               <h3 className="absolute bottom-0 italic font-bold text-2xl">
-                ×16
+                ×{data.quantity}
               </h3>
 
               <Transition

@@ -307,7 +307,7 @@ const Grid: any = (props: any) => {
       }`}
     >
       {entries.map((e: any, i: number) => (
-        <Box i={i} key={i} isEmpty={e === undefined ? true : false} />
+        <Box i={i} key={i} data={e} isEmpty={e === undefined ? true : false} />
       ))}
     </div>
   );

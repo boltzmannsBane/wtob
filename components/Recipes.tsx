@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const recipeCategories = [
   { title: "Dishes" },
@@ -9,6 +9,8 @@ const recipeCategories = [
 const Recipes = (props: any) => {
   const [filter, setFilter] = useState("");
   const [category, setCategory] = useState("Potions");
+
+	const recipeRef = useRef<any>(null)
 
   // selection. clone data into here, then filter it based on user selected criteria
   const data = [...Array(20)];
@@ -55,7 +57,9 @@ const Recipes = (props: any) => {
             {recipeCategories.map(({ title }, i) => (
               <h2
                 key={i}
-                onClick={() => setCategory(title)}
+                onClick={() => {setCategory(title)
+recipeRef.current.scrollTo(0, 0)
+		}}
                 className={`italic font-bold text-xl opacity-30 hover:opacity-100 transition duration-500 ${
                   title === category && "opacity-100"
                 }`}
@@ -68,7 +72,7 @@ const Recipes = (props: any) => {
       </div>
       {/*scrollable recipes go here */}
       <div className="relative max-w-full w-full flex-1">
-        <div className="recipe-container xl:absolute flex flex-row xl:flex-col gap-4 overflow-scroll w-full h-full max-h-full max-w-full invisible-scrollbar px-6 xl:px-0">
+        <div ref={recipeRef} className="recipe-container xl:absolute flex flex-row xl:flex-col gap-4 overflow-scroll w-full h-full max-h-full max-w-full invisible-scrollbar px-6 xl:px-0">
           {selection.map((e: any, i: number) => (
             <Recipe key={i} data={e} />
           ))}
@@ -81,19 +85,20 @@ const Recipes = (props: any) => {
 //w32 h32
 const Recipe = (props: any) => {
   return (
-    <div className="relative max-w-full flex flex-col items-center xl:flex-row xl:items-start xl:gap-4 p-6 bg-black bg-opacity-60 rounded-md  mt-4 xl:first:mt-6 xl:last:mb-10 xl:first:ml-0 xl:last:mr-0">
+    <div className="relative max-w-full flex flex-col items-center xl:flex-row xl:items-start xl:gap-8 p-12 xl:p-6 bg-black bg-opacity-60 rounded-md  mt-4 xl:first:mt-6 xl:last:mb-10 xl:first:ml-0 xl:last:mr-0">
+	  <div />
       {/* icon */}
-      <div className="relative w-full lg:w-32 h-32 flex items-center content-center justify-center">
+      <div className="relative  w-26 h-26 xl:w-32 xl:h-32 flex items-center content-center justify-center">
         <img
           src={`/${props.data.title}.webp`}
           alt={props.data.title}
-          className="w-28 h-28 object-cover"
+          className="w-full h-full object-cover"
         />
       </div>
       {/* title, effects, maybe something else */}
       <div className="flex flex-col gap-2 flex-wrap">
         <div className="flex gap-4 max-w-full flex-wrap items-center pb-1 border-b border-def">
-          <h1 className="w-full italic font-bold text-3xl text-center min-w-max">
+          <h1 className="w-full italic font-bold text-3xl text-center xl:text-left  min-w-max">
             {props.data.title}
           </h1>
         </div>
@@ -122,7 +127,7 @@ const Recipe = (props: any) => {
         </div>
       </div>
       {/* effects */}
-      <div className=" min-w-max pb-8">
+	  {/*      <div className=" min-w-max pb-8">
         <div className="p-1 bg-black rounded-sm  max-w-max">
           <div className="flex items-center content-center justify-center   border border-def border-opacity-30 p-1 px-1">
             <img src="/heart.svg" alt="heart" />
@@ -132,7 +137,7 @@ const Recipe = (props: any) => {
             <img src="/heart.svg" alt="heart" />
           </div>
         </div>
-      </div>
+      </div> */}
       <img
         src="/tlcor.svg"
         alt="tlcor"
@@ -149,7 +154,7 @@ const Recipe = (props: any) => {
         className="absolute bottom-0 left-0 p-4 opacity-30"
       />
       <div className="flex items-center gap-2 absolute bottom-0 right-0 p-4  opacity-100 hover:opacity-50 transition duration-500 cursor-pointer">
-        <h3 className="hidden xl:block italic font-bold text-2xl">Craft</h3>
+        <h3 className="hidden 2xl:block italic font-bold text-2xl">Craft</h3>
         <img src="/plus.svg" alt="plus" />
       </div>
     </div>
