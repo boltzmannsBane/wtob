@@ -81,9 +81,8 @@ const Inventory: React.FC<any> = ({ data }) => {
   const [items, setItems] = useState<any>({ materials: "", consumables: "" });
 
   useEffect(() => {
-    console.log(data);
     let splicedData: any[] = [];
-    let mockData = [...data.ingredients, ...Array(39)];
+    let mockData = data.ingredients;
     spliceData(mockData, splicedData);
     setItems((prev: any) => ({ ...prev, materials: splicedData }));
     splicedData = [];

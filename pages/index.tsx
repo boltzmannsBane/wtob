@@ -9,7 +9,6 @@ import Inventory from "../components/Inventory";
 import Recipes from "../components/Recipes";
 
 const Home: NextPage<any> = ({ data }) => {
-  useEffect(() => console.log(data), []);
   return (
     <div className="App max-w-screen bg-zeldabg xl:max-h-screen min-h-screen xl:h-screen flex flex-col divide-y divide-def divide-solid overflow-x-hidden overflow-hidden">
       <header className="relative px-6 py-6 md:px-16 md:py-12 bg-black bg-opacity-75 backdrop-filter backdrop-blur-lg flex justify-between">
