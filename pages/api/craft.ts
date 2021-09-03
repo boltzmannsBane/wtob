@@ -39,20 +39,19 @@ const handleCraftRequest = async (title, res) => {
   }
 
   try {
-    checkAvailability(item, cache, res);
+    checkAvailability(item);
   } catch (e) {
     res.status(500).json({ msg: "Not enough materials" });
   }
 
   try {
-    craft(cache, item, category);
-    res.status(200).json({ msg: `${category} recieved` });
+    craft(item, category);
   } catch (e) {
     res.status(500).json({ msg: "smth went wrongh" });
   }
 };
 
-async function checkAvailability(item, cache, res) {
+async function checkAvailability(item) {
   let isAvailable: boolean;
   await Promise.all(
     item.recipe.map(async ({ title, quantity }) => {
@@ -67,19 +66,16 @@ async function checkAvailability(item, cache, res) {
         isAvailable = false;
         return;
       }
-      cache.push({ ...data, quantity: data.quantity - quantity });
+      const ingr = await prisma.ingredient.update({
+        where: { title: title },
+        data: { quantity: data.quantity - quantity },
+      });
     })
   );
   if (isAvailable === false) throw new Error("Not enough materials");
 }
 
-async function craft(cache, craftingItem, category) {
-  cache.map(async ({ title, quantity }) => {
-    const ingredients = await prisma.ingredient.update({
-      where: { title: title },
-      data: { quantity: quantity },
-    });
-  });
+async function craft(craftingItem, category) {
   const result = await prisma[category].create({
     data: {
       title: craftingItem.title,
