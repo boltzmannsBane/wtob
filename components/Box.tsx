@@ -3,7 +3,7 @@ import useOutsideAlerter from "./useOutsideAlerter";
 import { gsap } from "gsap";
 import { Transition } from "react-transition-group";
 
-const Box: React.FC<any> = ({data, isEmpty, i }) => {
+const Box: React.FC<any> = ({data, isEmpty, i, isConsumable }) => {
   const [active, setActive] = useState(false);
   const ref = useRef(null);
 
@@ -129,10 +129,11 @@ const Box: React.FC<any> = ({data, isEmpty, i }) => {
               }`}
             >
 	      {data && <img src={`/${data.title}.webp`} alt={data.title} />}
-              <h3 className="absolute bottom-0 italic font-bold text-2xl">
+	      {!isConsumable &&              <h3 className="absolute bottom-0 italic font-bold text-2xl">
                 ×{data.quantity}
-              </h3>
+              </h3> }
 
+	     {isConsumable && 
               <Transition
                 timeout={500}
                 mountOnEnter
@@ -148,9 +149,10 @@ const Box: React.FC<any> = ({data, isEmpty, i }) => {
                   )} fixed md:absolute w-screen h-screen md:h-auto top-full md:top-1/2 md:w-80 z-50 bg-black bg-opacity-60`}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <ContextMenu close={deactivate} />
+                  <ContextMenu title={data.title} close={deactivate} />
                 </div>
               </Transition>
+	     }
             </div>
           </div>
         </div>
@@ -173,7 +175,7 @@ const ContextMenu = (props: any) => {
               className="italic text-3xl text-center font-medium"
               onClick={props.close}
             >
-              Consume
+	  {props.title.includes("Elixir") ? "Drink" : "Eat"}
             </h1>
           </div>
         </div>

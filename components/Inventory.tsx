@@ -86,7 +86,7 @@ const Inventory: React.FC<any> = ({ data }) => {
     spliceData(mockData, splicedData);
     setItems((prev: any) => ({ ...prev, materials: splicedData }));
     splicedData = [];
-    mockData = [...data.potions, ...Array(20)];
+    mockData = [...data.consumables, ...Array(20)];
     spliceData(mockData, splicedData);
     setItems((prev: any) => ({ ...prev, consumables: splicedData }));
   }, []);
@@ -97,6 +97,7 @@ const Inventory: React.FC<any> = ({ data }) => {
   const [gridMounted, setGridMounted] = useState(false);
 
   const prevSlide = usePrevious(slide);
+
 
   // once grid element is mounted,
   // get a list of all the nav dots
@@ -227,6 +228,7 @@ const Inventory: React.FC<any> = ({ data }) => {
                     length={gridNodesL}
                     index={i + items.materials.length}
                     key={i}
+			isConsumable={true}
                   />
                 );
               })}
@@ -306,7 +308,7 @@ const Grid: any = (props: any) => {
       }`}
     >
       {entries.map((e: any, i: number) => (
-        <Box i={i} key={i} data={e} isEmpty={e === undefined ? true : false} />
+        <Box i={i} key={i} data={e} isConsumable={props.isConsumable} isEmpty={e === undefined ? true : false} />
       ))}
     </div>
   );
