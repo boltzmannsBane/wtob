@@ -92,9 +92,9 @@ const Recipe = (props: any) => {
     try {
       console.log("Crafting");
       setLoading(true);
-      await fetch("./api/craft", { method: "POST", body: title })
-        .then(await props.refetch())
-        .then(setLoading(false));
+      await fetch("./api/craft", { method: "POST", body: title }).then(
+        setLoading(false)
+      );
     } catch (e) {
       console.log("smth went wrong");
       setLoading(false);
