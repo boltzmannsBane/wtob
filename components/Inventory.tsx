@@ -79,7 +79,7 @@ const InvMenuItem = (props: any) => {
 // maps over it and passes each chunk into a new grgd
 
 const Inventory: React.FC<any> = ({ data }) => {
-  const { items, setItems } = useContext(Context);
+  const { items, setItems } = useContext<any>(Context);
   useEffect(() => {
     let splicedData: any[] = [];
     let mockData = data.ingredients;
