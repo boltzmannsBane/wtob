@@ -89,7 +89,7 @@ const Inventory: React.FC<any> = ({ data }) => {
     mockData = [...data.consumables, ...Array(20)];
     spliceData(mockData, splicedData);
     setItems((prev: any) => ({ ...prev, consumables: splicedData }));
-  }, []);
+  }, [data]);
 
   const [slide, setSlide] = useState(0);
   const [gridNodesL, setGridNodesL] = useState(0);
