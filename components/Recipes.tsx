@@ -86,12 +86,19 @@ const Recipes = (props: any) => {
 
 //w32 h32
 const Recipe = (props: any) => {
-  const checkIfElixir = () =>
-    props.data.title.includes("Elixir") ? "potion" : "dish";
-  const obj = { a: "penis" };
+  const [loading, setLoading] = useState(false);
+  useEffect(() => console.log(loading), [loading]);
   const craft = async (title: string) => {
-    const req = await fetch("./api/craft", { method: "POST", body: title });
-    const res = await req.json();
+    try {
+      console.log("Crafting");
+      setLoading(true);
+      await fetch("./api/craft", { method: "POST", body: title })
+        .then(await props.refetch())
+        .then(setLoading(false));
+    } catch (e) {
+      console.log("smth went wrong");
+      setLoading(false);
+    }
   };
   return (
     <div className="relative max-w-full flex flex-col items-center xl:flex-row xl:items-start xl:gap-8 p-12 xl:p-6 bg-black bg-opacity-60 rounded-md  mt-4 xl:first:mt-6 xl:last:mb-10 xl:first:ml-0 xl:last:mr-0">
@@ -158,12 +165,17 @@ const Recipe = (props: any) => {
       />
       <div
         onClick={() => {
-          craft(props.data.title);
-          props.refetch();
+          !loading && craft(props.data.title);
         }}
         className="flex items-center gap-2 absolute bottom-0 right-0 p-4  opacity-100 hover:opacity-50 transition duration-500 cursor-pointer"
       >
-        <h3 className="hidden 2xl:block italic font-bold text-2xl">Craft</h3>
+        <h3
+          className={`hidden 2xl:block italic font-bold text-2xl ${
+            loading && "text-red-200"
+          }`}
+        >
+          Craft
+        </h3>
         <img src="/plus.svg" alt="plus" />
       </div>
     </div>
