@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import usePrevious from "./usePrevious";
 import { gsap } from "gsap";
+import { Context } from "./Context";
 import Box from "./Box";
 
 const menuItems = [
@@ -78,15 +79,14 @@ const InvMenuItem = (props: any) => {
 // maps over it and passes each chunk into a new grgd
 
 const Inventory: React.FC<any> = ({ data }) => {
-  const [items, setItems] = useState<any>({ materials: "", consumables: "" });
-
+  const { items, setItems } = useContext(Context);
   useEffect(() => {
     let splicedData: any[] = [];
     let mockData = data.ingredients;
     spliceData(mockData, splicedData);
     setItems((prev: any) => ({ ...prev, materials: splicedData }));
     splicedData = [];
-    mockData = [...data.consumables, ...Array(20)];
+    mockData = data.consumables;
     spliceData(mockData, splicedData);
     setItems((prev: any) => ({ ...prev, consumables: splicedData }));
   }, [data]);
@@ -98,12 +98,10 @@ const Inventory: React.FC<any> = ({ data }) => {
 
   const prevSlide = usePrevious(slide);
 
-
   // once grid element is mounted,
   // get a list of all the nav dots
   // and make the strating one display as active
   useEffect(() => {
-    //setStateNodes(assignNodes());
     const navdots = document.getElementsByClassName("inv-dot");
     setNavDots(navdots);
     navDots && navDots[0]?.removeAttribute("disabled");
@@ -228,7 +226,7 @@ const Inventory: React.FC<any> = ({ data }) => {
                     length={gridNodesL}
                     index={i + items.materials.length}
                     key={i}
-			isConsumable={true}
+                    isConsumable={true}
                   />
                 );
               })}
@@ -308,7 +306,13 @@ const Grid: any = (props: any) => {
       }`}
     >
       {entries.map((e: any, i: number) => (
-        <Box i={i} key={i} data={e} isConsumable={props.isConsumable} isEmpty={e === undefined ? true : false} />
+        <Box
+          i={i}
+          key={i}
+          data={e}
+          isConsumable={props.isConsumable}
+          isEmpty={e === undefined ? true : false}
+        />
       ))}
     </div>
   );

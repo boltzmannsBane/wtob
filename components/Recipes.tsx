@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+import { Context } from "./Context";
 
 const recipeCategories = [
   { title: "Dishes" },
@@ -87,14 +88,12 @@ const Recipes = (props: any) => {
 //w32 h32
 const Recipe = (props: any) => {
   const [loading, setLoading] = useState(false);
-  useEffect(() => console.log(loading), [loading]);
+  const { handleCraftRequest } = useContext(Context);
   const craft = async (title: string) => {
     try {
       console.log("Crafting");
       setLoading(true);
-      await fetch("./api/craft", { method: "POST", body: title }).then(
-        setLoading(false)
-      );
+      //await fetch("./api/craft", { method: "POST", body: title });
     } catch (e) {
       console.log("smth went wrong");
       setLoading(false);
@@ -165,7 +164,7 @@ const Recipe = (props: any) => {
       />
       <div
         onClick={() => {
-          !loading && craft(props.data.title);
+          !loading && handleCraftRequest(props.data.title);
         }}
         className="flex items-center gap-2 absolute bottom-0 right-0 p-4  opacity-100 hover:opacity-50 transition duration-500 cursor-pointer"
       >
