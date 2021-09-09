@@ -78,20 +78,27 @@ const InvMenuItem = (props: any) => {
 // this components recieves the entire data, then slices it into chunks of 20 max,
 // maps over it and passes each chunk into a new grgd
 
-const Inventory: React.FC<any> = ({ data }) => {
-  const { items, setItems } = useContext<any>(Context);
-  useEffect(() => {
+const Inventory: React.FC<any> = () => {
+  const { items, setItems, setScrollToLast } = useContext<any>(Context);
+
+  const refetch = async () => {
+    let req = await fetch("./api/refetch");
+    const data = await req.json();
+    return data;
+  };
+  const cut = (e) => {
     let splicedData: any[] = [];
-    let mockData = data.ingredients;
-    spliceData(mockData, splicedData);
+    spliceData(e.ingredients, splicedData);
     setItems((prev: any) => ({ ...prev, materials: splicedData }));
     splicedData = [];
-    mockData = data.consumables;
-    spliceData(mockData, splicedData);
+    spliceData(e.consumables, splicedData);
     setItems((prev: any) => ({ ...prev, consumables: splicedData }));
-  }, [data]);
+  };
+  useEffect(() => {
+    !items.materials ? refetch().then((res) => cut(res)) : items;
+  }, []);
 
-  const [slide, setSlide] = useState(0);
+  const { slide, setSlide } = useContext(Context);
   const [gridNodesL, setGridNodesL] = useState(0);
   const [stateNodes, setStateNodes] = useState<any>([]);
   const [gridMounted, setGridMounted] = useState(false);
@@ -121,7 +128,8 @@ const Inventory: React.FC<any> = ({ data }) => {
     // agcl === a string with the element's classes, active grid class list
     let agcl = stateNodes[slide]?.parentElement.classList.value;
     agcl && menuItemKeys.map((e) => agcl.includes(e) && setView(e));
-  }, [slide]);
+    console.log(slide);
+  }, [slide, stateNodes]);
 
   // arrow logic
   const [disabled, setDisabled] = useState(false);
@@ -230,6 +238,9 @@ const Inventory: React.FC<any> = ({ data }) => {
                   />
                 );
               })}
+            <div />
+            <div />
+            <div />
           </div>
         </div>
 
@@ -302,7 +313,7 @@ const Grid: any = (props: any) => {
       className={`inventory-grid 
       grid min-w-max grid-cols-5 py-4 grid-rows-4 gap-2 2xl:gap-3.5 ${
         props.index === 0 && "xl:pl-14"
-      } ${props.index === props.length - 1 && "xl:pr-14"} 
+      }  
       }`}
     >
       {entries.map((e: any, i: number) => (

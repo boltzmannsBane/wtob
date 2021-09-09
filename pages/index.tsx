@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
 import prisma from "../lib/prisma";
@@ -17,7 +16,7 @@ const Home: NextPage<any> = ({ data }) => {
         <Balance />
       </header>
       <main className="flex-1 flex flex-wrap xl:flex-nowrap xl:px-4 py-10 xl:py-4 gap-10 xl:gap-20 justify-center content-center items-center max-w-full bg-black bg-opacity-30 backdrop-filter backdrop-blur">
-        {data && <Inventory data={data} />}
+        <Inventory key={1} />
         {data && (
           <Recipes data={{ potions: data.potions, dishes: data.dishes }} />
         )}
@@ -37,15 +36,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     include: { recipe: true },
   });
   const potions = await prisma.potion.findMany({ orderBy: { id: "asc" } });
-  const dishes = await prisma.dish.findMany({ orderBy: { id: "asc" } });
-  const ingredients = await prisma.ingredient.findMany({
-    orderBy: { id: "desc" },
-  });
   const data = {
     potions: refPotions,
     dishes: refDishes,
-    ingredients: ingredients,
-    consumables: [...potions, ...dishes],
   };
   return {
     props: { data },
