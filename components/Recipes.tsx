@@ -93,7 +93,12 @@ const Recipe = (props: any) => {
     try {
       console.log("Crafting");
       setLoading(true);
-      //await fetch("./api/craft", { method: "POST", body: title });
+      let one = await fetch("./api/craft", {
+        method: "POST",
+        body: title,
+      });
+      let two = one.json();
+      return two;
     } catch (e) {
       console.log("smth went wrong");
       setLoading(false);
@@ -164,7 +169,7 @@ const Recipe = (props: any) => {
       />
       <div
         onClick={() => {
-          !loading && handleCraftRequest(props.data.title);
+          craft(props.data.title).then(handleCraftRequest);
         }}
         className="flex items-center gap-2 absolute bottom-0 right-0 p-4  opacity-100 hover:opacity-50 transition duration-500 cursor-pointer"
       >

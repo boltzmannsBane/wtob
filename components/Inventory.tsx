@@ -16,12 +16,6 @@ const menuItems = [
 
 const menuItemKeys = ["materials", "consumables"];
 
-const spliceData = (arr: any, dest: any): void => {
-  while (arr.length) {
-    dest.push(arr.splice(0, 20));
-  }
-};
-
 const InvMenuItem = (props: any) => {
   const dots = [...Array(props.length)];
   const ref = useRef(null);
@@ -79,24 +73,7 @@ const InvMenuItem = (props: any) => {
 // maps over it and passes each chunk into a new grgd
 
 const Inventory: React.FC<any> = () => {
-  const { items, setItems, setScrollToLast } = useContext<any>(Context);
-
-  const refetch = async () => {
-    let req = await fetch("./api/refetch");
-    const data = await req.json();
-    return data;
-  };
-  const cut = (e) => {
-    let splicedData: any[] = [];
-    spliceData(e.ingredients, splicedData);
-    setItems((prev: any) => ({ ...prev, materials: splicedData }));
-    splicedData = [];
-    spliceData(e.consumables, splicedData);
-    setItems((prev: any) => ({ ...prev, consumables: splicedData }));
-  };
-  useEffect(() => {
-    !items.materials ? refetch().then((res) => cut(res)) : items;
-  }, []);
+  const { items, setItems, foo, setFoo } = useContext<any>(Context);
 
   const { slide, setSlide } = useContext(Context);
   const [gridNodesL, setGridNodesL] = useState(0);
@@ -128,7 +105,6 @@ const Inventory: React.FC<any> = () => {
     // agcl === a string with the element's classes, active grid class list
     let agcl = stateNodes[slide]?.parentElement.classList.value;
     agcl && menuItemKeys.map((e) => agcl.includes(e) && setView(e));
-    console.log(slide);
   }, [slide, stateNodes]);
 
   // arrow logic

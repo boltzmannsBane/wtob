@@ -46,6 +46,7 @@ const handleCraftRequest = async (title, res) => {
 
   try {
     craft(item, category);
+    res.status(200).json({ msg: item + "successfully created" });
   } catch (e) {
     res.status(500).json({ msg: "smth went wrongh" });
   }
