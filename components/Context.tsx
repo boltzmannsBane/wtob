@@ -6,24 +6,23 @@ const ContextProvider = (props: any) => {
   const [foo, setFoo] = useState<any>();
   const [items, setItems] = useState<any>({ materials: "", consumables: "" });
   const [slide, setSlide] = useState<number>(0);
-  // const handleCraftRequest = (newItemTitle: string) => {
-  //   let clone = { ...items };
-  //   let target = clone.consumables[clone.consumables.length - 1];
-  //   if (target.length <= 19) {
-  //     target.push({ title: newItemTitle });
-  //           setItems(clone);
-  //   } else {
-  //     target = clone.consumables;
-  //     target.push([{ title: newItemTitle }]);
-  //          setItems(clone);
-  //         setSlide(4);
-  //   }
-  // };
   async function handleCraftRequest() {
     await refetch().then((res) => {
       cut(res);
       res.ok && console.log("fetched");
     });
+    if (items.consumables[items.consumables.length - 1].length > 19) {
+      setSlide(4);
+    }
+  }
+  async function handleConsumeRequest(id, title) {
+    console.log("smth goin on");
+    let req = await fetch("./api/consume", {
+      method: "POST",
+      body: JSON.stringify({ id: id, title: title }),
+    });
+    let res = await req.json();
+    refetch().then((res) => cut(res));
   }
   function cut(e) {
     let splicedData: any[] = [];
@@ -47,8 +46,7 @@ const ContextProvider = (props: any) => {
         handleCraftRequest,
         slide,
         setSlide,
-        foo,
-        setFoo,
+        handleConsumeRequest,
       }}
     >
       {props.children}

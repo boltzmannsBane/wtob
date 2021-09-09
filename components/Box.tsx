@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import useOutsideAlerter from "./useOutsideAlerter";
 import { gsap } from "gsap";
 import { Transition } from "react-transition-group";
+import { Context } from "./Context";
 
-const Box: React.FC<any> = ({data, isEmpty, i, isConsumable }) => {
+const Box: React.FC<any> = ({ data, isEmpty, i, isConsumable }) => {
   const [active, setActive] = useState(false);
   const ref = useRef(null);
 
@@ -128,31 +129,33 @@ const Box: React.FC<any> = ({data, isEmpty, i, isConsumable }) => {
                 !active && " border-opacity-30"
               }`}
             >
-	      {data && <img src={`/${data.title}.webp`} alt={data.title} />}
-	      {!isConsumable &&              <h3 className="absolute bottom-0 italic font-bold text-2xl">
-                ×{data.quantity}
-              </h3> }
+              {data && <img src={`/${data.title}.webp`} alt={data.title} />}
+              {!isConsumable && (
+                <h3 className="absolute bottom-0 italic font-bold text-2xl">
+                  ×{data.quantity}
+                </h3>
+              )}
 
-	     {isConsumable && 
-              <Transition
-                timeout={500}
-                mountOnEnter
-                unmountOnExit
-                in={active}
-                addEndListener={(node: any, done: any) => {
-                  isMobile ? mobileAppear(node) : desktopAppear(node);
-                }}
-              >
-                <div
-                  className={`box-modal-${handleModalClass(
-                    i
-                  )} fixed md:absolute w-screen h-screen md:h-auto top-full md:top-1/2 md:w-80 z-50 bg-black bg-opacity-60`}
-                  onClick={(e) => e.stopPropagation()}
+              {isConsumable && (
+                <Transition
+                  timeout={500}
+                  mountOnEnter
+                  unmountOnExit
+                  in={active}
+                  addEndListener={(node: any, done: any) => {
+                    isMobile ? mobileAppear(node) : desktopAppear(node);
+                  }}
                 >
-                  <ContextMenu title={data.title} close={deactivate} />
-                </div>
-              </Transition>
-	     }
+                  <div
+                    className={`box-modal-${handleModalClass(
+                      i
+                    )} fixed md:absolute w-screen h-screen md:h-auto top-full md:top-1/2 md:w-80 z-50 bg-black bg-opacity-60`}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <ContextMenu data={data} close={deactivate} />
+                  </div>
+                </Transition>
+              )}
             </div>
           </div>
         </div>
@@ -162,6 +165,7 @@ const Box: React.FC<any> = ({data, isEmpty, i, isConsumable }) => {
 };
 
 const ContextMenu = (props: any) => {
+  const { handleConsumeRequest } = useContext(Context);
   return (
     <div
       className={`relative w-full p-x h-full rounded-t-3xl md:rounded`}
@@ -173,9 +177,12 @@ const ContextMenu = (props: any) => {
           <div className="rounded-sm border  border-def transition duration-150 ease-in-out border-opacity-50  hover:border-opacity-100 p-4">
             <h1
               className="italic text-3xl text-center font-medium"
-              onClick={props.close}
+              onClick={() => {
+                handleConsumeRequest(props.data.id, props.data.title);
+                props.close();
+              }}
             >
-	  {props.title.includes("Elixir") ? "Drink" : "Eat"}
+              {props.data.title.includes("Elixir") ? "Drink" : "Eat"}
             </h1>
           </div>
         </div>

@@ -11,7 +11,6 @@ export default async function handler(
       handleCraftRequest(req.body, res);
     } catch (err) {
       res.status(500).json(err);
-      console.log(err);
     }
   }
 }
