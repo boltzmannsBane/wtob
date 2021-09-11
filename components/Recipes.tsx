@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext } from "react";
-import Image from 'next/image'
+import Image from "next/image";
 import { Context } from "./Context";
 
 const recipeCategories = [
@@ -11,6 +11,7 @@ const recipeCategories = [
 const Recipes = (props: any) => {
   const [filter, setFilter] = useState("");
   const [category, setCategory] = useState("Dishes");
+  const [loading, setLoading] = useState(false);
 
   const recipeRef = useRef<any>(null);
 
@@ -78,7 +79,13 @@ const Recipes = (props: any) => {
           className="recipe-container xl:absolute flex flex-row xl:flex-col gap-4 xl:gap-2 overflow-scroll w-full h-full max-h-full max-w-full invisible-scrollbar px-6 xl:px-0"
         >
           {selection.map((e: any, i: number) => (
-            <Recipe key={i} data={e} refetch={props.refetch} />
+            <Recipe
+              key={i}
+              data={e}
+              refetch={props.refetch}
+              loading={loading}
+              setLoading={setLoading}
+            />
           ))}
         </div>
       </div>
@@ -88,33 +95,35 @@ const Recipes = (props: any) => {
 
 //w32 h32
 const Recipe = (props: any) => {
-  const [loading, setLoading] = useState(false);
+  const { loading, setLoading } = props;
   const { handleCraftRequest } = useContext(Context);
   const craft = async (title: string) => {
+    handleLoading();
     try {
-      console.log("Crafting");
-      setLoading(true);
       let one = await fetch("./api/craft", {
         method: "POST",
         body: title,
       });
-      let two = one.json();
+      let two = await one.json();
       return two;
     } catch (e) {
       console.log("smth went wrong");
-      setLoading(false);
     }
   };
+  function handleLoading() {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 6000);
+  }
   return (
     <div className="relative max-w-full flex flex-col items-center xl:flex-row xl:items-start xl:gap-8 p-12 xl:p-6 bg-black bg-opacity-60 rounded-md  mt-4 xl:first:mt-6 xl:last:mb-10 xl:first:ml-0 xl:last:mr-0">
       <div />
       {/* icon */}
       <div className="relative w-28 h-28 xl:w-32 xl:h-32 flex items-center content-center justify-center">
-	  <Image 
+        <Image
           src={`/${props.data.title}.webp`}
           alt={props.data.title}
-	  layout="fill"
-	  />
+          layout="fill"
+        />
       </div>
       {/* title, effects, maybe something else */}
       <div className="flex flex-col gap-2 flex-wrap">
@@ -128,11 +137,7 @@ const Recipe = (props: any) => {
           {props.data.recipe.map((e, i) => (
             <div key={i} className="w-20 h-20 p-1 rounded-sm bg-black">
               <div className="relative w-full h-full border border-def border-opacity-30">
-		  <Image 
-                  src={`/${e.title}.webp`}
-                  alt={e.title}
-		  layout="fill"
-                />
+                <Image src={`/${e.title}.webp`} alt={e.title} layout="fill" />
                 <h3 className="absolute bottom-0 right-0 font-bold px-1">
                   x{e.quantity}
                 </h3>
@@ -170,14 +175,15 @@ const Recipe = (props: any) => {
       />
       <div
         onClick={() => {
-          craft(props.data.title).then(handleCraftRequest);
+          !loading && craft(props.data.title).then(handleCraftRequest);
         }}
-        className="flex items-center gap-2 absolute bottom-0 right-0 p-4  opacity-100 hover:opacity-50 transition duration-500 cursor-pointer"
+        className={`flex items-center gap-2 absolute bottom-0 right-0 p-4 hover:opacity-50 ${
+          loading ? "opacity-50 cursor-not-allowed" : "opacity-100"
+        } transition duration-500 cursor-pointer`}
       >
         <h3
-          className={`hidden 2xl:block italic font-bold text-2xl ${
-            loading && "text-red-200"
-          }`}
+          className={`hidden 2xl:block italic font-bold text-2xl 
+          `}
         >
           Craft
         </h3>

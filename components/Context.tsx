@@ -5,14 +5,15 @@ export const Context = createContext<any>(null);
 const ContextProvider = (props: any) => {
   const [items, setItems] = useState<any>({ materials: "", consumables: "" });
   const [slide, setSlide] = useState<number>(0);
+  const [stateNodes, setStateNodes] = useState<any>([]);
   async function handleCraftRequest() {
     await refetch().then((res) => {
       cut(res);
       res.ok && console.log("fetched");
     });
     if (items.consumables[items.consumables.length - 1].length > 19) {
-      setSlide(4);
-    }
+      setSlide(stateNodes.length);
+    } else setSlide(stateNodes.length - 1);
   }
   async function handleConsumeRequest(id, title) {
     console.log("smth goin on");
@@ -45,6 +46,8 @@ const ContextProvider = (props: any) => {
         handleCraftRequest,
         slide,
         setSlide,
+        stateNodes,
+        setStateNodes,
         handleConsumeRequest,
       }}
     >

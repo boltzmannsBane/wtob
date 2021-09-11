@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import useOutsideAlerter from "./useOutsideAlerter";
 import { gsap } from "gsap";
 import { Transition } from "react-transition-group";
-import Image from 'next/image'
+import Image from "next/image";
 import { Context } from "./Context";
 
 const Box: React.FC<any> = ({ data, isEmpty, i, isConsumable }) => {
@@ -130,7 +130,13 @@ const Box: React.FC<any> = ({ data, isEmpty, i, isConsumable }) => {
                 !active && " border-opacity-30"
               }`}
             >
-              {data && <Image src={`/${data.title}.webp`} alt={data.title} layout="fill"/> }
+              {data && (
+                <Image
+                  src={`/${data.title}.webp`}
+                  alt={data.title}
+                  layout="fill"
+                />
+              )}
               {!isConsumable && (
                 <h3 className="absolute bottom-0 italic font-bold text-2xl">
                   ×{data.quantity}

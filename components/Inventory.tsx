@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import usePrevious from "./usePrevious";
 import { gsap } from "gsap";
-import Image from 'next/image'
+import Image from "next/image";
 import { Context } from "./Context";
 import Box from "./Box";
 
@@ -52,13 +52,19 @@ const InvMenuItem = (props: any) => {
           ))}
       </div>
       <div
-	  onClick={handleClick}
+        onClick={handleClick}
         ref={ref}
         className={`relative transition duration-500 ease-in-out transform opacity-60 hover:opacity-100 ${
           props.view === props.data.key && "opacity-100"
         }`}
       >
-      <Image  alt={props.data.title} src={`/${props.data.src}`} layout="fixed" width={35} height={35}/>
+        <Image
+          alt={props.data.title}
+          src={`/${props.data.src}`}
+          layout="fixed"
+          width={35}
+          height={35}
+        />
       </div>
     </div>
   );
@@ -70,9 +76,8 @@ const InvMenuItem = (props: any) => {
 const Inventory: React.FC<any> = () => {
   const { items, setItems, foo, setFoo } = useContext<any>(Context);
 
-  const { slide, setSlide } = useContext(Context);
+  const { slide, setSlide, stateNodes, setStateNodes } = useContext(Context);
   const [gridNodesL, setGridNodesL] = useState(0);
-  const [stateNodes, setStateNodes] = useState<any>([]);
   const [gridMounted, setGridMounted] = useState(false);
 
   const prevSlide = usePrevious(slide);
@@ -195,7 +200,7 @@ const Inventory: React.FC<any> = () => {
           </div>
           <div className="flex gap-5 consumables-container">
             {" "}
-            {items.consumables ?
+            {items.consumables ? (
               items.consumables.map((e: any, i: number) => {
                 return (
                   <Grid
@@ -208,7 +213,10 @@ const Inventory: React.FC<any> = () => {
                     isConsumable={true}
                   />
                 );
-              }) : <LoadingGrid />}
+              })
+            ) : (
+              <LoadingGrid />
+            )}
             <div />
             <div />
             <div />
@@ -301,7 +309,7 @@ const Grid: any = (props: any) => {
 };
 
 const LoadingGrid = () => {
-const entries = [...Array(20)]
+  const entries = [...Array(20)];
   return (
     <div
       className={`inventory-grid 
@@ -310,15 +318,10 @@ const entries = [...Array(20)]
       }`}
     >
       {entries.map((e: any, i: number) => (
-        <Box
-          i={i}
-          key={i}
-          data={e}
-          isEmpty={true}
-        />
+        <Box i={i} key={i} data={e} isEmpty={true} />
       ))}
     </div>
   );
-}
+};
 
 export default Inventory;
