@@ -17,7 +17,7 @@ export default async function handler(
 
 async function handleConsumeRequest(body, res) {
   const { id, title } = JSON.parse(body);
-  let model = title.includes("Elixir") ? "potoin" : "dish";
+  let model = title.includes("Elixir") ? "potion" : "dish";
   const deleteConsumable = await prisma[model].delete({
     where: {
       id: id,
