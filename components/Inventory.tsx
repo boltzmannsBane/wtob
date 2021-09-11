@@ -195,7 +195,7 @@ const Inventory: React.FC<any> = () => {
           </div>
           <div className="flex gap-5 consumables-container">
             {" "}
-            {items.consumables &&
+            {items.consumables ?
               items.consumables.map((e: any, i: number) => {
                 return (
                   <Grid
@@ -208,7 +208,7 @@ const Inventory: React.FC<any> = () => {
                     isConsumable={true}
                   />
                 );
-              })}
+              }) : <LoadingGrid />}
             <div />
             <div />
             <div />
@@ -299,5 +299,26 @@ const Grid: any = (props: any) => {
     </div>
   );
 };
+
+const LoadingGrid = () => {
+const entries = [...Array(20)]
+  return (
+    <div
+      className={`inventory-grid 
+      grid min-w-max grid-cols-5 py-4 grid-rows-4 gap-2 2xl:gap-3.5 
+       xl:pl-14
+      }`}
+    >
+      {entries.map((e: any, i: number) => (
+        <Box
+          i={i}
+          key={i}
+          data={e}
+          isEmpty={true}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default Inventory;

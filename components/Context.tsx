@@ -3,7 +3,6 @@ import { createContext, useEffect, useState } from "react";
 export const Context = createContext<any>(null);
 
 const ContextProvider = (props: any) => {
-  const [foo, setFoo] = useState<any>();
   const [items, setItems] = useState<any>({ materials: "", consumables: "" });
   const [slide, setSlide] = useState<number>(0);
   async function handleCraftRequest() {
