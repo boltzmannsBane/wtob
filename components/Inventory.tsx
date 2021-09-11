@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import usePrevious from "./usePrevious";
 import { gsap } from "gsap";
+import Image from 'next/image'
 import { Context } from "./Context";
 import Box from "./Box";
 
@@ -38,12 +39,9 @@ const InvMenuItem = (props: any) => {
     let pointerIndex = props.stateNodes.indexOf(pointer);
     children?.length > 0 && props.setSlide(pointerIndex);
   }
-  // set Materials nav item as active on first page load.
-  // not tied towards the actual grid scroll state yet,
-  // tba in the future
   return (
     <div>
-      <div className="flex justify-center mb-1 space-x-1">
+      <div className="flex justify-center mb-2 space-x-1">
         {props.length > 1 &&
           dots?.map((e, i) => (
             <button
@@ -54,16 +52,13 @@ const InvMenuItem = (props: any) => {
           ))}
       </div>
       <div
+	  onClick={handleClick}
         ref={ref}
-        className={`relative transition duration-500 ease-in-out transform scale-75 opacity-60 hover:opacity-100 ${
+        className={`relative transition duration-500 ease-in-out transform opacity-60 hover:opacity-100 ${
           props.view === props.data.key && "opacity-100"
         }`}
       >
-        <img
-          onClick={handleClick}
-          src={`/${props.data.src}`}
-          alt={props.data.title}
-        />
+      <Image  alt={props.data.title} src={`/${props.data.src}`} layout="fixed" width={35} height={35}/>
       </div>
     </div>
   );

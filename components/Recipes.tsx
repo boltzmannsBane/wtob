@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useContext } from "react";
+import Image from 'next/image'
 import { Context } from "./Context";
 
 const recipeCategories = [
@@ -74,7 +75,7 @@ const Recipes = (props: any) => {
       <div className="relative max-w-full w-full flex-1">
         <div
           ref={recipeRef}
-          className="recipe-container xl:absolute flex flex-row xl:flex-col gap-4 overflow-scroll w-full h-full max-h-full max-w-full invisible-scrollbar px-6 xl:px-0"
+          className="recipe-container xl:absolute flex flex-row xl:flex-col gap-4 xl:gap-2 overflow-scroll w-full h-full max-h-full max-w-full invisible-scrollbar px-6 xl:px-0"
         >
           {selection.map((e: any, i: number) => (
             <Recipe key={i} data={e} refetch={props.refetch} />
@@ -108,12 +109,12 @@ const Recipe = (props: any) => {
     <div className="relative max-w-full flex flex-col items-center xl:flex-row xl:items-start xl:gap-8 p-12 xl:p-6 bg-black bg-opacity-60 rounded-md  mt-4 xl:first:mt-6 xl:last:mb-10 xl:first:ml-0 xl:last:mr-0">
       <div />
       {/* icon */}
-      <div className="relative  w-26 h-26 xl:w-32 xl:h-32 flex items-center content-center justify-center">
-        <img
+      <div className="relative w-28 h-28 xl:w-32 xl:h-32 flex items-center content-center justify-center">
+	  <Image 
           src={`/${props.data.title}.webp`}
           alt={props.data.title}
-          className="w-full h-full object-cover"
-        />
+	  layout="fill"
+	  />
       </div>
       {/* title, effects, maybe something else */}
       <div className="flex flex-col gap-2 flex-wrap">
@@ -127,10 +128,10 @@ const Recipe = (props: any) => {
           {props.data.recipe.map((e, i) => (
             <div key={i} className="w-20 h-20 p-1 rounded-sm bg-black">
               <div className="relative w-full h-full border border-def border-opacity-30">
-                <img
+		  <Image 
                   src={`/${e.title}.webp`}
                   alt={e.title}
-                  className="w-full h-full opacity-80 object-cover"
+		  layout="fill"
                 />
                 <h3 className="absolute bottom-0 right-0 font-bold px-1">
                   x{e.quantity}
