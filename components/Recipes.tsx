@@ -112,7 +112,7 @@ const Recipe = (props: any) => {
   };
   function handleLoading() {
     setLoading(true);
-    setTimeout(() => setLoading(false), 6000);
+    setTimeout(() => setLoading(false), 2000);
   }
   return (
     <div className="relative max-w-full flex flex-col items-center xl:flex-row xl:items-start xl:gap-8 p-12 xl:p-6 bg-black bg-opacity-60 rounded-md  mt-4 xl:first:mt-6 xl:last:mb-10 xl:first:ml-0 xl:last:mr-0">

@@ -74,7 +74,7 @@ const InvMenuItem = (props: any) => {
 // maps over it and passes each chunk into a new grgd
 
 const Inventory: React.FC<any> = () => {
-  const { items, setItems, foo, setFoo } = useContext<any>(Context);
+  const { items } = useContext<any>(Context);
 
   const { slide, setSlide, stateNodes, setStateNodes } = useContext(Context);
   const [gridNodesL, setGridNodesL] = useState(0);
@@ -105,6 +105,7 @@ const Inventory: React.FC<any> = () => {
     // agcl === a string with the element's classes, active grid class list
     let agcl = stateNodes[slide]?.parentElement.classList.value;
     agcl && menuItemKeys.map((e) => agcl.includes(e) && setView(e));
+    console.log(stateNodes.length);
   }, [slide, stateNodes]);
 
   // arrow logic
@@ -141,6 +142,7 @@ const Inventory: React.FC<any> = () => {
         .play();
   };
 
+  // set arrow animations into motion
   useEffect(() => {
     animateArrow(rarrowRef);
     animateArrow(larrowRef);

@@ -3,26 +3,53 @@ import { createContext, useEffect, useState } from "react";
 export const Context = createContext<any>(null);
 
 const ContextProvider = (props: any) => {
+  const [foo, setFoo] = useState<any>();
   const [items, setItems] = useState<any>({ materials: "", consumables: "" });
   const [slide, setSlide] = useState<number>(0);
   const [stateNodes, setStateNodes] = useState<any>([]);
+  const [key, setKey] = useState(0);
+  function changeKey() {
+    setKey((prev) => prev + 1);
+  }
   async function handleCraftRequest() {
     await refetch().then((res) => {
       cut(res);
-      res.ok && console.log("fetched");
     });
-    if (items.consumables[items.consumables.length - 1].length > 19) {
-      setSlide(stateNodes.length);
-    } else setSlide(stateNodes.length - 1);
   }
   async function handleConsumeRequest(id, title) {
-    console.log("smth goin on");
-    let req = await fetch("./api/consume", {
-      method: "POST",
-      body: JSON.stringify({ id: id, title: title }),
-    });
-    let res = await req.json();
-    refetch().then((res) => cut(res));
+    let sliceIndex = slide - 3;
+    let clone = { ...items };
+    let target = clone.consumables[sliceIndex];
+    let index = target.map((e) => e.id).indexOf(id);
+    if (target.length <= 1) {
+      let req = await fetch("./api/consume", {
+        method: "POST",
+        body: JSON.stringify({ id: id, title: title }),
+      });
+      setSlide((prev) => prev - 1);
+      clone.consumables.splice(sliceIndex, 1);
+      setItems(clone);
+      clone = [...stateNodes];
+      clone.pop();
+      setStateNodes(clone);
+    } else {
+      let req = await fetch("./api/consume", {
+        method: "POST",
+        body: JSON.stringify({ id: id, title: title }),
+      });
+      let res = await req.json();
+      refetch().then((res) => cut(res));
+    }
+    if (clone.consumables[stateNodes.length - 4].length <= 1) {
+      clone = [...stateNodes];
+      clone.pop();
+      setStateNodes(clone);
+    }
+    //clone.consumables.pop();
+    //setItems(clone);
+    //clone = [...stateNodes];
+    // clone.pop();
+    // setStateNodes(clone);
   }
   function cut(e) {
     let splicedData: any[] = [];
@@ -49,6 +76,8 @@ const ContextProvider = (props: any) => {
         stateNodes,
         setStateNodes,
         handleConsumeRequest,
+        key,
+        changeKey,
       }}
     >
       {props.children}
