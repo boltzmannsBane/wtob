@@ -219,7 +219,7 @@ const Inventory: React.FC = () => {
           </div>
           <div className="flex gap-5 consumables-container">
             {" "}
-            {items.consumables ? (
+            {items.consumables.length > 0 ? (
               items.consumables.map((e: item[], i: number) => {
                 return (
                   <Grid

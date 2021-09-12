@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Image from "next/image";
 import { Context } from "./Context";
 
@@ -13,7 +13,7 @@ const Recipes: React.FC<recipesProps> = (props) => {
   const [category, setCategory] = useState("Dishes");
   const [loading, setLoading] = useState(false);
 
-  const recipeRef = useRef<any>(null);
+  const recipeRef: ref = useRef();
 
   // selection. clone data into here, then filter it based on user selected criteria
   const [selection, setSelection] = useState(props.data.dishes);
@@ -78,7 +78,7 @@ const Recipes: React.FC<recipesProps> = (props) => {
           ref={recipeRef}
           className="recipe-container xl:absolute flex flex-row xl:flex-col gap-4 xl:gap-2 overflow-scroll w-full h-full max-h-full max-w-full invisible-scrollbar px-6 xl:px-0"
         >
-          {selection.map((e: any, i: number) => (
+          {selection.map((e: referenceConsumable, i: number) => (
             <Recipe
               key={i}
               data={e}
@@ -93,7 +93,7 @@ const Recipes: React.FC<recipesProps> = (props) => {
 };
 
 //w32 h32
-const Recipe = (props: any) => {
+const Recipe: React.FC<uniqueRecipeProps> = (props) => {
   const { loading, setLoading } = props;
   const [loadingInd, setLoadingInd] = useState(false);
   const { handleCraftRequest } = useContext(Context);
@@ -115,7 +115,7 @@ const Recipe = (props: any) => {
     setTimeout(() => {
       setLoading(false);
       setLoadingInd(false);
-    }, 3000);
+    }, 4000);
   }
   return (
     <div className="relative max-w-full flex flex-col xlp:flex-row items-center xlp:items-start xlp:gap-8 p-12 xlp:p-6 bg-black bg-opacity-60 rounded-md  mt-4 xlp:first:mt-6 xlp:last:mb-10 xlp:first:ml-0 xlp:last:mr-0">

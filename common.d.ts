@@ -99,3 +99,19 @@ declare interface recipeData {
 declare interface recipesProps {
   data: recipeData;
 }
+
+declare interface uniqueRecipeProps {
+  data: referenceConsumable;
+  loading: boolean;
+  setLoading: (arg: boolean) => void;
+}
+
+declare interface contextItemsProps {
+  materials: referenceConsumable[][];
+  consumables: referenceConsumable[][];
+}
+
+declare interface fetchData {
+  ingredients: item[];
+  consumables: item[];
+}
