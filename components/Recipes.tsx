@@ -175,7 +175,10 @@ const Recipe = (props: any) => {
       />
       <div
         onClick={() => {
-          !loading && craft(props.data.title).then(handleCraftRequest);
+          !loading &&
+            craft(props.data.title).then(() =>
+              handleCraftRequest(props.data.title)
+            );
         }}
         className={`flex items-center gap-2 absolute bottom-0 right-0 p-4 hover:opacity-50 ${
           loading ? "opacity-50 cursor-not-allowed" : "opacity-100"

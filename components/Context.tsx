@@ -11,16 +11,21 @@ const ContextProvider = (props: any) => {
   function changeKey() {
     setKey((prev) => prev + 1);
   }
-  async function handleCraftRequest() {
-	  let newGrid = false
-	  items.consumables[items.consumables.length - 1].length === 20 && (newGrid = true)
+  async function handleCraftRequest(title) {
+    let newGrid = false;
+    let isElixir = title.includes("Elixir");
+    items.consumables[items.consumables.length - 1].length === 20 &&
+      (newGrid = true);
     await refetch().then((res) => {
       cut(res);
     });
-if (newGrid) {
-console.log("new grid")
-setSlide(stateNodes.length)
-} else {setSlide(stateNodes.length - 1)}
+    if (newGrid) {
+      !isElixir && setSlide(stateNodes.length);
+    } else {
+      isElixir
+        ? setSlide(stateNodes.length - 3)
+        : setSlide(stateNodes.length - 1);
+    }
   }
   async function handleConsumeRequest(id, title) {
     let sliceIndex = slide - 3;
@@ -46,12 +51,15 @@ setSlide(stateNodes.length)
       let res = await req.json();
       refetch().then((res) => cut(res));
     }
-    if (items.consumables[items.consumables.length - 1].length <= 1 && slide !== (stateNodes.length - 1)) {
-	    if (slide !== (stateNodes.length - 1)) {
-      clone = [...stateNodes];
-      clone.pop();
-      setStateNodes(clone);
-	    }
+    if (
+      items.consumables[items.consumables.length - 1].length <= 1 &&
+      slide !== stateNodes.length - 1
+    ) {
+      if (slide !== stateNodes.length - 1) {
+        clone = [...stateNodes];
+        clone.pop();
+        setStateNodes(clone);
+      }
     }
   }
   function cut(e) {
