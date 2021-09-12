@@ -5,7 +5,7 @@ import { Transition } from "react-transition-group";
 import Image from "next/image";
 import { Context } from "./Context";
 
-const Box: React.FC<any> = ({ data, isEmpty, i, isConsumable }) => {
+const Box: React.FC<boxProps> = ({ data, isEmpty, i, isConsumable }) => {
   const [active, setActive] = useState(false);
   const ref = useRef(null);
 
@@ -18,7 +18,7 @@ const Box: React.FC<any> = ({ data, isEmpty, i, isConsumable }) => {
     setActive((prev) => !prev);
   }
 
-  const animateCorner = (ref: any, values: any) =>
+  const animateCorner = (ref: imgref, values: xy) =>
     gsap
       .to(ref.current, {
         x: values.x,
@@ -54,8 +54,6 @@ const Box: React.FC<any> = ({ data, isEmpty, i, isConsumable }) => {
       autoAlpha: active ? 1 : 0,
       duration: 0.3,
     });
-  const mobileAppear = (node: any) =>
-    gsap.to(node, { top: active ? "30%" : "100%", duration: 0.3 });
 
   const handleModalClass = (i: number) => {
     if (i === 0 || i % 5 === 0) return "left";
@@ -66,13 +64,16 @@ const Box: React.FC<any> = ({ data, isEmpty, i, isConsumable }) => {
     <>
       {" "}
       {isEmpty === "loading" && (
-        <div key={i} className="w-28 h-28 2xl:w-32 2xl:h-32 p-1 rounded bg-gray-100 bg-opacity-10">
+        <div
+          key={i}
+          className="w-28 h-28 2xl:w-32 2xl:h-32 p-1 rounded bg-gray-100 bg-opacity-10"
+        >
           <div className="h-full w-full flex justify-center items-center border border-def border-opacity-10">
             <Loader />
           </div>
         </div>
       )}
-      {isEmpty &&  isEmpty !== "loading" && (
+      {isEmpty && isEmpty !== "loading" && (
         <div
           key={i}
           className="w-28 h-28 2xl:w-32 2xl:h-32 p-1 rounded bg-gray-100 bg-opacity-10"
@@ -180,7 +181,7 @@ const Box: React.FC<any> = ({ data, isEmpty, i, isConsumable }) => {
   );
 };
 
-const ContextMenu = (props: any) => {
+const ContextMenu: React.FC<contextMenuProps> = (props) => {
   const { handleConsumeRequest } = useContext(Context);
   return (
     <div

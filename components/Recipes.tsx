@@ -8,7 +8,7 @@ const recipeCategories = [
   { title: "All" },
 ];
 
-const Recipes = (props: any) => {
+const Recipes: React.FC<recipesProps> = (props) => {
   const [filter, setFilter] = useState("");
   const [category, setCategory] = useState("Dishes");
   const [loading, setLoading] = useState(false);
@@ -16,9 +16,9 @@ const Recipes = (props: any) => {
   const recipeRef = useRef<any>(null);
 
   // selection. clone data into here, then filter it based on user selected criteria
-  const data = [...Array(20)];
-  const [selection, setSelection] = useState(props.data.potions);
+  const [selection, setSelection] = useState(props.data.dishes);
 
+  // resets filter on change, returns clean selection based on category
   const handleCategoryChange = () => {
     filter !== "" && setFilter("");
     category === "Potions" && setSelection(props.data.potions);
@@ -31,9 +31,9 @@ const Recipes = (props: any) => {
   }, [category]);
 
   useEffect(() => {
-    let filteredSelection: any = [];
-    props.data[category.toLowerCase()].filter(
-      (e: any) =>
+    let filteredSelection: referenceConsumable[] = [];
+    selection.filter(
+      (e: referenceConsumable) =>
         e.title.toLowerCase().includes(filter.toLowerCase()) &&
         filteredSelection.push(e)
     );
@@ -82,7 +82,6 @@ const Recipes = (props: any) => {
             <Recipe
               key={i}
               data={e}
-              refetch={props.refetch}
               loading={loading}
               setLoading={setLoading}
             />

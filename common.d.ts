@@ -1,6 +1,9 @@
 declare type ref = React.MutableRefObject<HTMLDivElement>;
+
 declare type div = HTMLDivElement;
+
 declare type imgref = React.RefObject<HTMLImageElement>;
+
 declare type view =
   | "weapons"
   | "bows"
@@ -9,13 +12,17 @@ declare type view =
   | "materials"
   | "consumables"
   | "favorites";
+
 declare interface menuItem {
   title: string;
   src: string;
   key: view;
 }
+
 declare type menuItems = menuItem[];
+
 declare type click = React.MouseEvent;
+
 declare interface InvMenuItemProps {
   stateNodes: div[];
   view: view;
@@ -26,42 +33,69 @@ declare interface InvMenuItemProps {
   length: number;
 }
 
-declare type ingredient = {
+declare type item = {
   id: number;
   title: string;
-  type: string;
+  type?: string;
   effect: number;
-  quantity: number;
+  quantity?: number;
 };
-declare interface Dish {
-  id: number;
-  title: string;
-  effect?: string;
-}
-
-declare interface Potion {
-  id: number;
-  title: string;
-  effect?: string;
-}
-declare type consumable = Dish | Potion;
 
 declare interface gridProps {
   setGridMounted?: (arg: boolean) => void;
   organizeGridNodes: (el: ref) => void;
-  data: ingredient[] | consumable[];
+  data: item[];
   length: number;
   index: number;
   slide: number;
   isConsumable: boolean;
 }
 
-declare interface BoxProps {
-  isEmpty: boolean;
+declare interface boxProps {
+  isEmpty: boolean | string;
   i: number;
+  data: item;
+  isConsumable?: boolean;
+}
+
+declare interface contextMenuProps {
+  data: item;
+  close: () => void;
 }
 
 declare interface xy {
   x: number;
   y: number;
+}
+
+declare interface recipeProps {
+  potions: string;
+}
+
+declare type referenceIngredient = {
+  id: number;
+  title: string;
+  type: string;
+  effect: number;
+  quantity: number;
+  referenceDish?: string;
+  referenceDishId?: number;
+  referencePotion?: string;
+  referencePotionId?: number;
+};
+
+declare type referenceConsumable = {
+  id: number;
+  title: string;
+  recipe: referenceIngredient[];
+  effect?: string | number;
+};
+
+declare interface recipeData {
+  potions: referenceConsumable[];
+  dishes: referenceConsumable[];
+}
+
+declare interface recipesProps {
+  data: recipeData;
 }

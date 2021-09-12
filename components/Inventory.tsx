@@ -202,7 +202,7 @@ const Inventory: React.FC = () => {
           <div className="flex gap-5 materials-container">
             {" "}
             {items.materials &&
-              items.materials.map((e: ingredient[], i: number) => {
+              items.materials.map((e: item[], i: number) => {
                 return (
                   <Grid
                     setGridMounted={setGridMounted}
@@ -220,7 +220,7 @@ const Inventory: React.FC = () => {
           <div className="flex gap-5 consumables-container">
             {" "}
             {items.consumables ? (
-              items.consumables.map((e: consumable[], i: number) => {
+              items.consumables.map((e: item[], i: number) => {
                 return (
                   <Grid
                     organizeGridNodes={organizeGridNodes}
@@ -314,7 +314,7 @@ const Grid: React.FC<gridProps> = (props) => {
       }  
       }`}
     >
-      {entries.map((e: ingredient | consumable, i: number) => (
+      {entries.map((e: item, i: number) => (
         <Box
           i={i}
           key={i}

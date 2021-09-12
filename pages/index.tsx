@@ -6,8 +6,10 @@ import Status from "../components/Status";
 import Nav from "../components/Nav";
 import Inventory from "../components/Inventory";
 import Recipes from "../components/Recipes";
+import { useEffect } from "react";
 
 const Home: NextPage<any> = ({ data }) => {
+  useEffect(() => console.log(data), []);
   return (
     <>
       <div className="App max-w-screen bg-zeldabg xl:max-h-screen min-h-screen xl:h-screen flex flex-col divide-y divide-def divide-solid overflow-x-hidden overflow-hidden">
