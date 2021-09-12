@@ -1,11 +1,17 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  MouseEventHandler,
+} from "react";
 import usePrevious from "./usePrevious";
 import { gsap } from "gsap";
 import Image from "next/image";
 import { Context } from "./Context";
 import Box from "./Box";
 
-const menuItems = [
+const menuItems: menuItems = [
   { title: "Weapons", src: "weapons.svg", key: "weapons" },
   { title: "Bows", src: "ranged.svg", key: "bows" },
   { title: "Shields", src: "shields.svg", key: "shields" },
@@ -15,35 +21,42 @@ const menuItems = [
   { title: "Favorites", src: "favorites.svg", key: "favorites" },
 ];
 
-const menuItemKeys = ["materials", "consumables"];
+const menuItemKeys: view[] = ["materials", "consumables"];
 
-const InvMenuItem = (props: any) => {
-  const dots = [...Array(props.length)];
+const InvMenuItem: React.FC<InvMenuItemProps> = ({
+  stateNodes,
+  view,
+  index,
+  setSlide,
+  slide,
+  data,
+  length,
+}) => {
+  const dots = [...Array(length)];
   const ref = useRef(null);
-	const isClickable = props.data.title === "Materials" || props.data.title === "Consumables"
+  const isClickable =
+    data.title === "Materials" || data.title === "Consumables";
 
   let children: any;
   let pointer: any;
 
-  function handleClick(e: any) {
-    e.stopPropagation();
+  function handleClick(event: click) {
+    event.stopPropagation();
     // the following sequence finds the first child of each grids cluster
     // corresponding to the nav item
     // and marks is as a pointer
     // to scroll towards when the
     // nav item is clicked
     !children &&
-      (children = document.querySelector(
-        `.${props.data.key}-container`
-      )?.children);
+      (children = document.querySelector(`.${data.key}-container`)?.children);
     !pointer && children?.length > 0 && (pointer = [...children][0]);
-    let pointerIndex = props.stateNodes.indexOf(pointer);
-    children?.length > 0 && props.setSlide(pointerIndex);
+    let pointerIndex = stateNodes.indexOf(pointer);
+    children?.length > 0 && setSlide(pointerIndex);
   }
   return (
     <div>
       <div className="flex justify-center mb-2 space-x-1">
-        {props.length > 1 &&
+        {length > 1 &&
           dots?.map((e, i) => (
             <button
               className="inv-dot cursor-default rounded-full w-1 h-1 bg-def transition duration-200 opacity-100 disabled:opacity-50"
@@ -56,13 +69,13 @@ const InvMenuItem = (props: any) => {
         onClick={handleClick}
         ref={ref}
         className={`relative transition duration-500 ease-in-out transform opacity-60 hover:opacity-100 ${
-          props.view === props.data.key && "opacity-100"
+          view === data.key && "opacity-100"
         }
 		 ${!isClickable && "cursor-not-allowed"}`}
       >
         <Image
-          alt={props.data.title}
-          src={`/${props.data.src}`}
+          alt={data.title}
+          src={`/${data.src}`}
           layout="fixed"
           width={35}
           height={35}
@@ -75,8 +88,8 @@ const InvMenuItem = (props: any) => {
 // this components recieves the entire data, then slices it into chunks of 20 max,
 // maps over it and passes each chunk into a new grgd
 
-const Inventory: React.FC<any> = () => {
-  const { items } = useContext<any>(Context);
+const Inventory: React.FC = () => {
+  const { items } = useContext(Context);
 
   const { slide, setSlide, stateNodes, setStateNodes } = useContext(Context);
   const [gridNodesL, setGridNodesL] = useState(0);
@@ -102,7 +115,7 @@ const Inventory: React.FC<any> = () => {
         behavior: "smooth",
         inline: "center",
       });
-    navDots && navDots[prevSlide]?.setAttribute("disabled", true);
+    navDots && navDots[prevSlide]?.setAttribute("disabled", "true");
     navDots && navDots[slide]?.removeAttribute("disabled");
     // agcl === a string with the element's classes, active grid class list
     let agcl = stateNodes[slide]?.parentElement.classList.value;
@@ -111,15 +124,15 @@ const Inventory: React.FC<any> = () => {
 
   // arrow logic
   const [disabled, setDisabled] = useState(false);
-  const rarrowRef = useRef(null);
-  const larrowRef = useRef(null);
-  const handleArrowClick = (forward: boolean, ref: any) => {
+  const rarrowRef: imgref = useRef();
+  const larrowRef: imgref = useRef();
+  const handleArrowClick = (forward: boolean, ref: ref) => {
     forward && slide <= stateNodes.length - 2 && setSlide((prev) => prev + 1);
     !forward && slide >= 1 && setSlide((prev) => prev - 1);
   };
 
   // makes arrows animate left n right
-  const animateArrow = (ref: any) =>
+  const animateArrow = (ref: imgref) =>
     gsap
       .to(ref.current, {
         x: -10,
@@ -130,7 +143,7 @@ const Inventory: React.FC<any> = () => {
       .play();
 
   // shrinks arrows on click
-  const animateClick = (ref: any) => {
+  const animateClick = (ref: imgref) => {
     !disabled &&
       gsap
         .to(ref.current, {
@@ -150,15 +163,17 @@ const Inventory: React.FC<any> = () => {
   }, []);
 
   //nav logic
-  const [navDots, setNavDots] = useState<any>(null);
-  const [view, setView] = useState("materials");
+  const [navDots, setNavDots] = useState<HTMLCollectionOf<Element> | null>(
+    null
+  );
+  const [view, setView] = useState<view>("materials");
   // inventory or inventory-container
-  const handleNavPoints = (view: string | undefined) => {
+  const handleNavPoints = (view: view) => {
     if (view === "materials") return items.materials?.length;
     if (view === "consumables") return items.consumables?.length;
   };
-  const organizeGridNodes = (el: any) =>
-    setStateNodes((prev: any) => [...prev, el]);
+  const organizeGridNodes = (el: ref) =>
+    setStateNodes((prev: ref[]) => [...prev, el.current]);
 
   // make overflow-scroll dynamic as to prevent users from shift+scrolling themselves
   return (
@@ -187,7 +202,7 @@ const Inventory: React.FC<any> = () => {
           <div className="flex gap-5 materials-container">
             {" "}
             {items.materials &&
-              items.materials.map((e: any, i: number) => {
+              items.materials.map((e: ingredient[], i: number) => {
                 return (
                   <Grid
                     setGridMounted={setGridMounted}
@@ -197,6 +212,7 @@ const Inventory: React.FC<any> = () => {
                     length={gridNodesL}
                     index={i}
                     key={i}
+                    isConsumable={false}
                   />
                 );
               })}
@@ -204,7 +220,7 @@ const Inventory: React.FC<any> = () => {
           <div className="flex gap-5 consumables-container">
             {" "}
             {items.consumables ? (
-              items.consumables.map((e: any, i: number) => {
+              items.consumables.map((e: consumable[], i: number) => {
                 return (
                   <Grid
                     organizeGridNodes={organizeGridNodes}
@@ -273,7 +289,7 @@ const Inventory: React.FC<any> = () => {
 //  );
 //}
 
-const Grid: any = (props: any) => {
+const Grid: React.FC<gridProps> = (props) => {
   const quantityOfEntries = props.data.length;
   const minimumEntries = 20;
   // fill the grid with empty boxes if quantity of fetched entries
@@ -282,13 +298,13 @@ const Grid: any = (props: any) => {
     let diff = minimumEntries - quantityOfEntries;
     return [...props.data, ...Array(diff)];
   }
-  const ref = useRef<any>(null);
+  const ref: ref = useRef(null);
   const entries =
     quantityOfEntries < minimumEntries ? addRemaining() : props.data;
   useEffect(() => {
     props.index === 0 && props.setGridMounted(true);
   }, [props.slide]);
-  useEffect(() => props.organizeGridNodes(ref.current), []);
+  useEffect(() => props.organizeGridNodes(ref), []);
   return (
     <div
       ref={ref}
@@ -298,7 +314,7 @@ const Grid: any = (props: any) => {
       }  
       }`}
     >
-      {entries.map((e: any, i: number) => (
+      {entries.map((e: ingredient | consumable, i: number) => (
         <Box
           i={i}
           key={i}
