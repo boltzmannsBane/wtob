@@ -20,6 +20,7 @@ const menuItemKeys = ["materials", "consumables"];
 const InvMenuItem = (props: any) => {
   const dots = [...Array(props.length)];
   const ref = useRef(null);
+	const isClickable = props.data.title === "Materials" || props.data.title === "Consumables"
 
   let children: any;
   let pointer: any;
@@ -56,7 +57,8 @@ const InvMenuItem = (props: any) => {
         ref={ref}
         className={`relative transition duration-500 ease-in-out transform opacity-60 hover:opacity-100 ${
           props.view === props.data.key && "opacity-100"
-        }`}
+        }
+		 ${!isClickable && "cursor-not-allowed"}`}
       >
         <Image
           alt={props.data.title}
@@ -105,7 +107,6 @@ const Inventory: React.FC<any> = () => {
     // agcl === a string with the element's classes, active grid class list
     let agcl = stateNodes[slide]?.parentElement.classList.value;
     agcl && menuItemKeys.map((e) => agcl.includes(e) && setView(e));
-    console.log(stateNodes.length);
   }, [slide, stateNodes]);
 
   // arrow logic
@@ -320,7 +321,7 @@ const LoadingGrid = () => {
       }`}
     >
       {entries.map((e: any, i: number) => (
-        <Box i={i} key={i} data={e} isEmpty={true} />
+        <Box i={i} key={i} data={e} isEmpty={"loading"} />
       ))}
     </div>
   );

@@ -23,7 +23,7 @@ function Nav() {
       <nav className="pointer-events-auto flex items-center space-x-10 items-center">
         <div
           ref={lcontrolRef}
-          className=" group flex flex-col items-center"
+          className=" group flex flex-col items-center cursor-not-allowed"
           onClick={() => animateClick(lcontrolRef)}
         >
           <img
@@ -51,7 +51,7 @@ function Nav() {
         </div>
         <div
           ref={rcontrolRef}
-          className="group flex flex-col items-center"
+          className="group flex flex-col items-center cursor-not-allowed"
           onClick={() => animateClick(rcontrolRef)}
         >
           <img

@@ -1,5 +1,3 @@
-import React from "react";
-
 function Status() {
   return (
     <div className="flex space-x-1 items-center max-w-md ">
@@ -20,7 +18,7 @@ const StatusItem: React.FC<StatusProps> = ({ item }) => {
 
 const StockStatus = () => {
   let stockHealth = [...Array(8)];
-  let extraHealth = [...Array(8)];
+  let extraHealth = [...Array(20)];
   return (
     <div className="flex space-y-1  flex-wrap">
       <div></div>

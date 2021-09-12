@@ -65,7 +65,14 @@ const Box: React.FC<any> = ({ data, isEmpty, i, isConsumable }) => {
   return (
     <>
       {" "}
-      {isEmpty && (
+      {isEmpty === "loading" && (
+        <div key={i} className="w-28 h-28 2xl:w-32 2xl:h-32 p-1 rounded bg-gray-100 bg-opacity-10">
+          <div className="h-full w-full flex justify-center items-center border border-def border-opacity-10">
+            <Loader />
+          </div>
+        </div>
+      )}
+      {isEmpty &&  isEmpty !== "loading" && (
         <div
           key={i}
           className="w-28 h-28 2xl:w-32 2xl:h-32 p-1 rounded bg-gray-100 bg-opacity-10"
@@ -208,5 +215,15 @@ const ContextMenu = (props: any) => {
     </div>
   );
 };
+
+function Loader() {
+  return (
+    <div className="loader">
+      <div className="ball1"></div>
+      <div className="ball2"></div>
+      <div className="ball3"></div>
+    </div>
+  );
+}
 
 export default Box;

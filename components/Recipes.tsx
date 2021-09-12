@@ -99,7 +99,7 @@ const Recipe = (props: any) => {
   const [loadingInd, setLoadingInd] = useState(false);
   const { handleCraftRequest } = useContext(Context);
   const craft = async (title: string) => {
-  handleLoading()
+    handleLoading();
     try {
       let one = await fetch("./api/craft", {
         method: "POST",
