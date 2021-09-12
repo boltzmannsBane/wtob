@@ -40,16 +40,11 @@ const ContextProvider = (props: any) => {
       let res = await req.json();
       refetch().then((res) => cut(res));
     }
-    if (clone.consumables[stateNodes.length - 4].length <= 1) {
+    if (clone.consumables[clone.consumables.length - 1].length <= 1 && slide !== (stateNodes.length - 1)) {
       clone = [...stateNodes];
       clone.pop();
       setStateNodes(clone);
     }
-    //clone.consumables.pop();
-    //setItems(clone);
-    //clone = [...stateNodes];
-    // clone.pop();
-    // setStateNodes(clone);
   }
   function cut(e) {
     let splicedData: any[] = [];
