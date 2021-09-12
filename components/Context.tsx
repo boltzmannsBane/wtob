@@ -12,9 +12,15 @@ const ContextProvider = (props: any) => {
     setKey((prev) => prev + 1);
   }
   async function handleCraftRequest() {
+	  let newGrid = false
+	  items.consumables[items.consumables.length - 1].length === 20 && (newGrid = true)
     await refetch().then((res) => {
       cut(res);
     });
+if (newGrid) {
+console.log("new grid")
+setSlide(stateNodes.length)
+} else {setSlide(stateNodes.length - 1)}
   }
   async function handleConsumeRequest(id, title) {
     let sliceIndex = slide - 3;
@@ -40,10 +46,12 @@ const ContextProvider = (props: any) => {
       let res = await req.json();
       refetch().then((res) => cut(res));
     }
-    if (clone.consumables[clone.consumables.length - 1].length <= 1 && slide !== (stateNodes.length - 1)) {
+    if (items.consumables[items.consumables.length - 1].length <= 1 && slide !== (stateNodes.length - 1)) {
+	    if (slide !== (stateNodes.length - 1)) {
       clone = [...stateNodes];
       clone.pop();
       setStateNodes(clone);
+	    }
     }
   }
   function cut(e) {
