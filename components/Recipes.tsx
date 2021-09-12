@@ -73,7 +73,7 @@ const Recipes = (props: any) => {
         </div>
       </div>
       {/*scrollable recipes go here */}
-      <div className="relative max-w-full w-full flex-1">
+      <div className="relative max-w-full w-full flex-1 overflow-scroll invisible-scrollbar">
         <div
           ref={recipeRef}
           className="recipe-container xl:absolute flex flex-row xl:flex-col gap-4 xl:gap-2 overflow-scroll w-full h-full max-h-full max-w-full invisible-scrollbar px-6 xl:px-0"
@@ -96,9 +96,10 @@ const Recipes = (props: any) => {
 //w32 h32
 const Recipe = (props: any) => {
   const { loading, setLoading } = props;
+  const [loadingInd, setLoadingInd] = useState(false);
   const { handleCraftRequest } = useContext(Context);
   const craft = async (title: string) => {
-    handleLoading();
+  handleLoading()
     try {
       let one = await fetch("./api/craft", {
         method: "POST",
@@ -112,10 +113,13 @@ const Recipe = (props: any) => {
   };
   function handleLoading() {
     setLoading(true);
-    setTimeout(() => setLoading(false), 2000);
+    setTimeout(() => {
+      setLoading(false);
+      setLoadingInd(false);
+    }, 3000);
   }
   return (
-    <div className="relative max-w-full flex flex-col items-center xl:flex-row xl:items-start xl:gap-8 p-12 xl:p-6 bg-black bg-opacity-60 rounded-md  mt-4 xl:first:mt-6 xl:last:mb-10 xl:first:ml-0 xl:last:mr-0">
+    <div className="relative max-w-full flex flex-col xlp:flex-row items-center xlp:items-start xlp:gap-8 p-12 xlp:p-6 bg-black bg-opacity-60 rounded-md  mt-4 xlp:first:mt-6 xlp:last:mb-10 xlp:first:ml-0 xlp:last:mr-0">
       <div />
       {/* icon */}
       <div className="relative w-28 h-28 xl:w-32 xl:h-32 flex items-center content-center justify-center">
@@ -128,14 +132,17 @@ const Recipe = (props: any) => {
       {/* title, effects, maybe something else */}
       <div className="flex flex-col gap-2 flex-wrap">
         <div className="flex gap-4 max-w-full flex-wrap items-center pb-1 border-b border-def">
-          <h1 className="w-full italic font-bold text-3xl text-center xl:text-left  min-w-max">
+          <h1 className="w-full italic font-bold text-3xl text-center xlp:text-left  min-w-max">
             {props.data.title}
           </h1>
         </div>
         {/* ingredients */}
-        <div className="flex justify-center xl:justify-start gap-2">
+        <div className="flex justify-center xlp:justify-start gap-2">
           {props.data.recipe.map((e, i) => (
-            <div key={i} className="w-20 h-20 p-1 rounded-sm bg-black">
+            <div
+              key={i}
+              className="w-14 h-14 xl:w-20 xl:h-20 p-1 rounded-sm bg-black"
+            >
               <div className="relative w-full h-full border border-def border-opacity-30">
                 <Image src={`/${e.title}.webp`} alt={e.title} layout="fill" />
                 <h3 className="absolute bottom-0 right-0 font-bold px-1">
@@ -173,27 +180,44 @@ const Recipe = (props: any) => {
         alt="blcor"
         className="absolute bottom-0 left-0 p-4 opacity-30"
       />
-      <div
-        onClick={() => {
-          !loading &&
-            craft(props.data.title).then(() =>
-              handleCraftRequest(props.data.title)
-            );
-        }}
-        className={`flex items-center gap-2 absolute bottom-0 right-0 p-4 hover:opacity-50 ${
-          loading ? "opacity-50 cursor-not-allowed" : "opacity-100"
-        } transition duration-500 cursor-pointer`}
-      >
-        <h3
-          className={`hidden 2xl:block italic font-bold text-2xl 
-          `}
+      {loadingInd ? (
+        <div className="absolute bottom-0 right-0 p-4">
+          <Loader />
+        </div>
+      ) : (
+        <div
+          onClick={() => {
+            setLoadingInd(true);
+            !loading &&
+              craft(props.data.title).then(() =>
+                handleCraftRequest(props.data.title)
+              );
+          }}
+          className={`flex items-center gap-2 absolute bottom-0 right-0 p-4 hover:opacity-50 ${
+            loading ? "opacity-50 cursor-not-allowed" : "opacity-100"
+          } transition duration-500 cursor-pointer`}
         >
-          Craft
-        </h3>
-        <img src="/plus.svg" alt="plus" />
-      </div>
+          <h3
+            className={`hidden 2xl:block italic font-bold text-2xl 
+          `}
+          >
+            Craft
+          </h3>
+          <img src="/plus.svg" alt="plus" />
+        </div>
+      )}
     </div>
   );
 };
+
+function Loader() {
+  return (
+    <div className="loader">
+      <div className="ball1"></div>
+      <div className="ball2"></div>
+      <div className="ball3"></div>
+    </div>
+  );
+}
 
 export default Recipes;

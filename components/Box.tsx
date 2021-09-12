@@ -150,13 +150,15 @@ const Box: React.FC<any> = ({ data, isEmpty, i, isConsumable }) => {
                   unmountOnExit
                   in={active}
                   addEndListener={(node: any, done: any) => {
-                    isMobile ? mobileAppear(node) : desktopAppear(node);
+                    isMobile ? "" : desktopAppear(node);
                   }}
                 >
                   <div
                     className={`box-modal-${handleModalClass(
                       i
-                    )} fixed md:absolute w-screen h-screen md:h-auto top-full md:top-1/2 md:w-80 z-50 bg-black bg-opacity-60`}
+                    )} fixed md:absolute w-screen h-screen md:h-auto top-full ${
+                      i < 15 ? "md:top-1/2" : "md:-top-3/4 xl:-top-1/2"
+                    } md:w-80 z-50 bg-black bg-opacity-60`}
                     onClick={(e) => e.stopPropagation()}
                   >
                     <ContextMenu data={data} close={deactivate} />

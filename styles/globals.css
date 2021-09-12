@@ -93,3 +93,49 @@ a {
     min-width: 260px;
   }
 }
+
+.loader {
+  width: 36px;
+  height: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-right: 4px;
+}
+
+.loader > div {
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background: #e2ded3;
+  opacity: 0.6;
+}
+
+.ball1 {
+  animation: loader 1s ease-in-out infinite;
+}
+
+.ball2 {
+  animation: loader 1s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+.ball3 {
+  animation: loader 1s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+
+@keyframes loader {
+  0% {
+    transform: translateY(0%);
+  }
+  33% {
+    transform: translateY(-50%);
+  }
+  66% {
+    transform: translateY(50%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
